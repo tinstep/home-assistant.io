@@ -418,7 +418,7 @@ A visual timeline is provided below, showing an example of when these conditions
 
 ## Template condition
 
-The template condition tests if the [given template][template] renders a value equal to true. This is achieved by having the template result in a true boolean expression or by having the template render `True`.
+The template condition tests if the [given template][template] renders a value equal to true. This is achieved by having the template result in a true boolean expression or by having the template render `True`. Additionally adding int(0) provides a default value if the entity is unavalable, which avoids needless log spam during startup.
 
 {% raw %}
 
@@ -426,7 +426,7 @@ The template condition tests if the [given template][template] renders a value e
 condition:
   alias: "Iphone battery above 50%"
   condition: template
-  value_template: "{{ (state_attr('device_tracker.iphone', 'battery_level')|int) > 50 }}"
+  value_template: "{{ (state_attr('device_tracker.iphone', 'battery_level')|int(0) ) > 50 }}"
 ```
 
 {% endraw %}
@@ -442,7 +442,7 @@ For example:
 {% raw %}
 
 ```yaml
-conditions: "{{ (state_attr('device_tracker.iphone', 'battery_level')|int) > 50 }}"
+conditions: "{{ (state_attr('device_tracker.iphone', 'battery_level')|int(0)) > 50 }}"
 ```
 
 {% endraw %}
@@ -454,7 +454,7 @@ chapter and one or more shorthand template conditions
 
 ```yaml
 conditions:
-  - "{{ (state_attr('device_tracker.iphone', 'battery_level')|int) > 50 }}"
+  - "{{ (state_attr('device_tracker.iphone', 'battery_level')|int(0)) > 50 }}"
   - condition: state
     entity_id: alarm_control_panel.home
     state: armed_away
